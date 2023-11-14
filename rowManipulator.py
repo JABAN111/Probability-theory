@@ -172,7 +172,35 @@ class rowManipulator:
     def frequency_polygon(self):
         plt.subplot(5, 1, 3)
         plt.title("Полигон приведенных частот")
-        plt.plot(list(self.grouped_data.keys()), list(self.grouped_data.values()), c='red')
+        if(self.grouped_data != None):
+            plt.plot(list(self.grouped_data.keys()), list(self.grouped_data.values()), c='red')
+        else:
+            self.interval_statistical_distribution()
+            self.frequency_polygon()
+    '''
+    Гистограмма частот
+    '''
+
+    def frequency_histogram(self):
+        plt.subplot(5, 1, 5)
+        plt.title("Гистограмма частот")
+
+        n = len(self.row)
+        sorted_row = self.variation_series()
+        m = 1 + round(log(n, 2))
+        h = round((sorted_row[-1] - sorted_row[0]) / m, 2)
+
+        x_values = []
+        for x in self.grouped_data.keys():
+            x_values.append(x + h / 2)
+
+        y_values = list(self.grouped_data.values())
+        plt.bar(x_values, y_values, width=h)
+
+        xticks = [round(x + h,2) for x in self.grouped_data.keys()]
+        xticks.insert(0,round(list(self.grouped_data.keys())[0],2))
+        plt.xticks(xticks, xticks)
+
 
     '''
     Отображает все графики, сделанные plt
