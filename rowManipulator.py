@@ -9,6 +9,8 @@ from math import log
 class rowManipulator:
     def __init__(self, row):
         self.row = row
+        self.grouped_data = None
+
 
     '''
     Возвращает вариационный ряд
@@ -24,10 +26,10 @@ class rowManipulator:
     def extremes(self):
         min_value = str(self.variation_series()[0])
         max_value = str(self.variation_series()[-1])
-        return "Минимальное значение: " + min_value + ", максимальное значение: " + max_value
+        return "Минимальное значение: " + min_value + ", Максимальное значение: " + max_value
 
     '''
-    Возвращает размах выборки
+    :return размах выборки
     '''
 
     def scope(self):
@@ -99,16 +101,14 @@ class rowManipulator:
     :return среднеквадратичное отклонение
     '''
 
-    def avgSqrt(self):
+    def standard_deviation(self):
         return self.dispersion() ** 0.5
 
     '''
     :return эмпирическую функцию распределения и график к ней
     '''
-
-    def empiricFunRasp(self):
+    def empirical_distribution(self):
         count_set = self.Statistical_series()
-        print("Эмпирическая функция:")
         plt.subplot(5, 1, 1)
         plt.title("График эмпирической функции распределения")
         n = len(count_set)
@@ -133,7 +133,39 @@ class rowManipulator:
         plt.show()
         return result
 
+    '''
+    Интервальное статистическое распределение
+    '''
 
+    def interval_statistical_distribution(self):
+        sorted_row = self.variation_series()
+        n = len(self.row)
+        m = 1 + round(log(n, 2))
+        h = round((sorted_row[-1] - sorted_row[0]) / m, 2)
+        curr_x = sorted_row[0] - h / 2
+        next_x = curr_x + h
+        grouped_data = {curr_x: 0}
+        for x in sorted_row:
+            if x < next_x:
+                grouped_data[curr_x] += 1 / n
+            else:
+                grouped_data[next_x] = 1 / n
+                curr_x = next_x
+                next_x = round(next_x + h, 2)
+        table = PrettyTable()
+        field_names = []
+        self.grouped_data = grouped_data
+        for x in grouped_data.keys():
+            field_names.append(f'[{round(x, 2)}; {round(x + h, 2)})')
+
+        values_list = []
+        for x in grouped_data.values():
+            values_list.append(round(x, 2))
+
+        table.field_names = field_names
+        table.add_row(values_list)
+
+        return table
 
 
 
