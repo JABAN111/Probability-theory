@@ -130,7 +130,6 @@ class rowManipulator:
             result += f'{left}| {round(y, 2)}, при {keys[i]} < x <= {keys[i + 1]}\n'
             plt.plot([keys[i], keys[i + 1]], [y, y], c='black')
         result += f'\t\t\\ {round(y, 2)}, при {keys[-1]} < x'
-        plt.show()
         return result
 
     '''
@@ -167,5 +166,16 @@ class rowManipulator:
 
         return table
 
+    '''
+    Полигон частот
+    '''
+    def frequency_polygon(self):
+        plt.subplot(5, 1, 3)
+        plt.title("Полигон приведенных частот")
+        plt.plot(list(self.grouped_data.keys()), list(self.grouped_data.values()), c='red')
 
-
+    '''
+    Отображает все графики, сделанные plt
+    '''
+    def show_images(self):
+        plt.show()
