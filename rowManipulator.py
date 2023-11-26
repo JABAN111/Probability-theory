@@ -1,6 +1,7 @@
-'''
+"""
 Класс для обработки и взаимодействия с выборкой
-'''
+"""
+
 import matplotlib.pyplot as plt
 from prettytable import PrettyTable
 from math import log
@@ -39,17 +40,14 @@ class rowManipulator:
 
     '''
     Возвращает статистический ряд
-    Нужен для нахождения мат ожидания и дисперсии
     :return словарь, где ключ 
     '''
 
     def Statistical_series(self):
-        # создаем пустой словарь для хранения пары ключ-значение
         count_set = {}
         sortedRow = self.variation_series()
 
         for x in sortedRow:
-            # Если словарь не пустой и проверяет совпадение с последним добавленным ключом
             if count_set and x == list(count_set.keys())[-1]:
                 count_set[x] += 1
             else:
@@ -58,7 +56,6 @@ class rowManipulator:
 
     '''
     Возвращает красивой табличкой данные 
-    p.s. для вывода таблички print(printer_Statistical_series())
     '''
 
     def printer_Statistical_series(self):
@@ -107,6 +104,7 @@ class rowManipulator:
     '''
     :return эмпирическую функцию распределения и график к ней
     '''
+
     def empirical_distribution(self):
         count_set = self.Statistical_series()
         plt.subplot(5, 1, 1)
@@ -116,21 +114,18 @@ class rowManipulator:
         y = 0
         print(f'\t\t/ {round(y, 2)}, при x <= {keys[0]}')
         result = ""
-        for i in range(n - 1):
+        for i in range(n-1):
             if i < n:
                 y += count_set[keys[i]] / n
-            else:
-                y += 0
-
             if i == n / 2:
                 left = "F*(x) = "
             else:
                 left = "\t\t"
-
             result += f'{left}| {round(y, 2)}, при {keys[i]} < x <= {keys[i + 1]}\n'
             plt.plot([keys[i], keys[i + 1]], [y, y], c='black')
         result += f'\t\t\\ {round(y, 2)}, при {keys[-1]} < x'
-        return result
+        return result;
+
 
     '''
     Интервальное статистическое распределение

@@ -15,6 +15,8 @@ rowOfEighthVariant = [1.07, 1.59,
 rowController = rowManipulator(rowOfEighthVariant)
 print("Вариационный ряд: ")
 print(rowController.variation_series())
+print("Статистический ряд")
+print(rowController.printer_Statistical_series())
 print("Экстремальные значения: " + rowController.extremes())
 print("Размах: " + str(rowController.scope()))
 print("Оценка математического ожидания: " + str(rowController.assessment_mathematical_expectation()))
