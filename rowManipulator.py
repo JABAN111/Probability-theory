@@ -75,10 +75,17 @@ class rowManipulator:
 
     def avg_row(self):
         """
-        :return среднее значение выборки
+        :return среднее арифметическое значение выборки
         """
-        return sum(self.row) / len(self.row)
+        result = 0
+        inv_n = 1 / len(self.variation_series())
+        array_p = self.relative_frequency()
+        cnt = 0
+        for i in range(len(array_p)):
+            result += inv_n * array_p[i]
+            cnt += 1
 
+        return result
     def assessment_mathematical_expectation(self):
         """
         :return оценку мат ожидания выборки
@@ -169,11 +176,11 @@ class rowManipulator:
 
         return table
 
-    '''
-    Полигон частот
-    '''
 
     def frequency_polygon(self):
+        """
+        Полигон частот
+        """
         plt.subplot(5, 1, 3)
         plt.title("Полигон приведенных частот")
         if (self.grouped_data != None):
