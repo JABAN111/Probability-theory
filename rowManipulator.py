@@ -38,31 +38,48 @@ class rowManipulator:
         max_value = self.variation_series()[-1]
         return max_value - min_value
 
-    '''
-    Возвращает статистический ряд
-    :return словарь, где ключ 
-    '''
+
 
     def Statistical_series(self):
+        """
+        Возвращает статистический ряд
+        """
         count_set = {}
-        sortedRow = self.variation_series()
+        sorted_row = self.variation_series()
 
-        for x in sortedRow:
+        for x in sorted_row:
+            #пометка для себя: проверяем последний ключ, тк если элемент повторяется, то он будет подряд и не нужно
+            #весь массив
             if count_set and x == list(count_set.keys())[-1]:
                 count_set[x] += 1
             else:
                 count_set[x] = 1
         return count_set
 
-    '''
-    Возвращает красивой табличкой данные 
-    '''
-
+    def relative_frequency(self):
+        """
+        Вычисляет относительную частоту для статического ряда
+        :return: возвращает массив со значениями p(i) для статического ряда
+        """
+        p = []
+        n = len(self.variation_series())
+        count_set = self.Statistical_series()
+        # p = [i // n for i in list(count_set.values())]
+        for i in list(count_set.values()):
+            p.append(i/n)
+            # print("текущее значение value: " + i + "результат его вычесления: " + str(i/n))
+        # print(p)
+        return p
     def printer_Statistical_series(self):
+        """
+        Выводит в стандартный поток вывода красивую табличку
+        """
         count_set = self.Statistical_series()
         table = PrettyTable()
         table.field_names = ["x(i)", *count_set.keys()]
         table.add_row(["n(i)", *count_set.values()])
+
+        table.add_row(["p(i)", *self.relative_frequency()])
         return table
 
     '''
@@ -101,11 +118,12 @@ class rowManipulator:
     def standard_deviation(self):
         return self.dispersion() ** 0.5
 
-    '''
-    :return эмпирическую функцию распределения и график к ней
-    '''
+
 
     def empirical_distribution(self):
+        """
+       :return эмпирическую функцию распределения и график к ней
+       """
         count_set = self.Statistical_series()
         plt.subplot(5, 1, 1)
         plt.title("График эмпирической функции распределения")
@@ -172,11 +190,12 @@ class rowManipulator:
         else:
             self.interval_statistical_distribution()
             self.frequency_polygon()
-    '''
-    Гистограмма частот
-    '''
+
 
     def frequency_histogram(self):
+        '''
+        Гистограмма частот
+        '''
         plt.subplot(5, 1, 5)
         plt.title("Гистограмма частот")
 
