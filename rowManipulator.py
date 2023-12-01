@@ -86,6 +86,7 @@ class rowManipulator:
             cnt += 1
 
         return result
+
     def assessment_mathematical_expectation(self):
         """
         :return оценку мат ожидания выборки
@@ -103,23 +104,24 @@ class rowManipulator:
         :return дисперсию выборки
         """
         dispersion = 0
-        for x in self.row:
-            dispersion += (x - self.avg_row()) * (x - self.avg_row())
-        return dispersion
-
-    '''
-    :return среднеквадратичное отклонение
-    '''
+        avg = self.avg_row()
+        arrayP = self.relative_frequency()
+        rows = list(self.Statistical_series().keys())
+        for x in range(len(rows)):
+            dispersion += (rows[x] - avg) * (rows[x] - avg) * arrayP[x]
+        return round(dispersion, 3)
 
     def standard_deviation(self):
-        return self.dispersion() ** 0.5
+        """
+        :return среднеквадратичное отклонение
+        """
+        return round(self.dispersion() ** 0.5, 2)
 
     def empirical_distribution(self):
         """
        :return эмпирическую функцию распределения и график к ней
        """
         count_set = self.Statistical_series()
-        print(len(self.variation_series()))
         plt.subplot(5, 1, 1)
         plt.title("График эмпирической функции распределения")
         n = len(count_set)
@@ -131,15 +133,15 @@ class rowManipulator:
         for i in range(n - 1):
             if i < n:
                 y += frequencyArray[i]
-            #if+else для красивого вывода F(x)
+            # if+else для красивого вывода F(x)
             if i == n / 2:
                 left = "F*(x) = "
             else:
                 left = "\t\t"
-            result += f'{left}| {round(y,2)}, при {keys[i]} < x <= {keys[i + 1]}\n'
+            result += f'{left}| {round(y, 2)}, при {keys[i]} < x <= {keys[i + 1]}\n'
             plt.plot([keys[i], keys[i + 1]], [y, y], c='black')
         y += frequencyArray[-1]
-        result += f'\t\t\\ {round(y,2)}, при {keys[-1]} < x'
+        result += f'\t\t\\ {round(y, 2)}, при x > {keys[-1]}'
         return result
 
     '''
@@ -176,7 +178,6 @@ class rowManipulator:
 
         return table
 
-
     def frequency_polygon(self):
         """
         Полигон частот
@@ -184,15 +185,20 @@ class rowManipulator:
         plt.subplot(5, 1, 3)
         plt.title("Полигон приведенных частот")
         if (self.grouped_data != None):
-            plt.plot(list(self.grouped_data.keys()), list(self.grouped_data.values()), c='red')
+            y_values = list(self.grouped_data.values())
+            x_values = list(self.grouped_data.keys())
+            y_values.append(0.05)
+            x_values.append(1.92)
+            plt.plot(x_values, y_values, c='red')
+            plt.xticks(x_values)
         else:
             self.interval_statistical_distribution()
             self.frequency_polygon()
 
     def frequency_histogram(self):
-        '''
+        """
         Гистограмма частот
-        '''
+        """
         plt.subplot(5, 1, 5)
         plt.title("Гистограмма частот")
 
