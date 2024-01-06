@@ -187,8 +187,7 @@ class rowManipulator:
         if (self.grouped_data != None):
             y_values = list(self.grouped_data.values())
             x_values = list(self.grouped_data.keys())
-            y_values.append(0.05)
-            x_values.append(1.92)
+
             plt.plot(x_values, y_values, c='red')
             plt.xticks(x_values)
         else:
